@@ -1,3 +1,4 @@
+//@Pattern(regexp = "^[a-zA-Z0-9+_-]+([.][a-zA-Z0-9]+)*@([a-zA-Z0-9]+)([.][a-z]+)?[.][a-z]{2,}$", message = "incorrect email address")
 package com.cg.addressbook.model;
 
 import javax.validation.constraints.NotEmpty;
@@ -6,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Objects;
 
-public class Contact {
+public class AddressBookData {
 
     private String id;
     @NotNull(message = "Please provide first Name")
@@ -21,7 +22,6 @@ public class Contact {
 
     @NotNull(message = "Please provide email")
     @NotEmpty(message = "Please provide email")
-    @Pattern(regexp = "^[a-zA-Z0-9+_-]+([.][a-zA-Z0-9]+)*@([a-zA-Z0-9]+)([.][a-z]+)?[.][a-z]{2,}$", message = "incorrect email address")
     private String email;
 
     @NotNull(message = "Please provide address")
@@ -34,7 +34,7 @@ public class Contact {
 
     List<String> phoneNumbers;
 
-    public Contact(String firstName, String lastName, String email, String address, List<String> phoneNumbers) {
+    public AddressBookData(String firstName, String lastName, String email, String address, List<String> phoneNumbers) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -94,13 +94,13 @@ public class Contact {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Contact contact = (Contact) o;
-        return Objects.equals(firstName, contact.firstName) &&
-                Objects.equals(lastName, contact.lastName) &&
-                Objects.equals(email, contact.email) &&
-                Objects.equals(address, contact.address) &&
-                phoneNumbers.containsAll(contact.getPhoneNumbers())
-                && contact.getPhoneNumbers().containsAll(phoneNumbers);
+        AddressBookData addressBookData = (AddressBookData) o;
+        return Objects.equals(firstName, addressBookData.firstName) &&
+                Objects.equals(lastName, addressBookData.lastName) &&
+                Objects.equals(email, addressBookData.email) &&
+                Objects.equals(address, addressBookData.address) &&
+                phoneNumbers.containsAll(addressBookData.getPhoneNumbers())
+                && addressBookData.getPhoneNumbers().containsAll(phoneNumbers);
     }
 
     @Override
