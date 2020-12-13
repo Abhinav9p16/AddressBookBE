@@ -1,69 +1,45 @@
-//@Pattern(regexp = "^[a-zA-Z0-9+_-]+([.][a-zA-Z0-9]+)*@([a-zA-Z0-9]+)([.][a-z]+)?[.][a-z]{2,}$", message = "incorrect email address")
 package com.cg.addressbook.model;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.util.List;
-import java.util.Objects;
+import com.cg.addressbook.dto.AddressBookDTO;
 
 public class AddressBookData {
 
-    private String id;
-    @NotNull(message = "Please provide first Name")
-    @NotEmpty(message = "Please provide first Name")
-    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9-]*$", message = "incorrect first name")
-    private String firstName;
-
-    @NotNull(message = "Please provide last Name")
-    @NotEmpty(message = "Please provide last Name")
-    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9-]*$", message = "incorrect last name")
-    private String lastName;
-
-    @NotNull(message = "Please provide email")
-    @NotEmpty(message = "Please provide email")
-    private String email;
-
-    @NotNull(message = "Please provide address")
-    @NotEmpty(message = "Please provide address")
+    private int contactId;
+    private String name;
     private String address;
+    private String city;
+    private String state;
+    private String zip;
+    private String phone;
 
-    @NotNull(message = "Please provide phone number")
-    @NotEmpty(message = "Please provide phone number")
-    @Pattern(regexp = "^[0-9]{1,}[ ][1-9]{1}[0-9]{9}$", message = "incorrect phone number")
 
-    List<String> phoneNumbers;
-
-    public AddressBookData(String firstName, String lastName, String email, String address, List<String> phoneNumbers) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.address = address;
-        this.phoneNumbers = phoneNumbers;
+    public AddressBookData() {
     }
 
-    public String getFirstName() {
-        return firstName;
+    public AddressBookData(int contactId , AddressBookDTO addressBookDTO) {
+        this.contactId = contactId;
+        this.name = addressBookDTO.name;
+        this.address = addressBookDTO.address;
+        this.city = addressBookDTO.city;
+        this.state = addressBookDTO.state;
+        this.zip = addressBookDTO.zip;
+        this.phone = addressBookDTO.phone;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public int getContactId() {
+        return contactId;
     }
 
-    public String getLastName() {
-        return lastName;
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getName() {
+        return name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
@@ -74,40 +50,44 @@ public class AddressBookData {
         this.address = address;
     }
 
-    public List<String> getPhoneNumbers() {
-        return phoneNumbers;
+    public String getCity() {
+        return city;
     }
 
-    public void setPhoneNumbers(List<String> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getId() {
-        return this.id;
+    public String getState() {
+        return state;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AddressBookData addressBookData = (AddressBookData) o;
-        return Objects.equals(firstName, addressBookData.firstName) &&
-                Objects.equals(lastName, addressBookData.lastName) &&
-                Objects.equals(email, addressBookData.email) &&
-                Objects.equals(address, addressBookData.address) &&
-                phoneNumbers.containsAll(addressBookData.getPhoneNumbers())
-                && addressBookData.getPhoneNumbers().containsAll(phoneNumbers);
+    public String getZip() {
+        return zip;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, email, address, phoneNumbers);
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
+
+
+
+
+
+
 
 
 

@@ -1,69 +1,48 @@
 package com.cg.addressbook.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.cg.addressbook.exceptions.AddressBookException;
-import com.cg.addressbook.model.AddressBookData;
 import org.springframework.stereotype.Service;
 
-
-import java.util.*;
-import java.util.stream.Collectors;
+import com.cg.addressbook.dto.AddressBookDTO;
+import com.cg.addressbook.model.AddressBookData;
 
 @Service
-public class AddressBookService {
+public class AddressBookService implements IAddressBookService{
 
-    private static final String ADDRESS_BOOK_1 = "address-book-1";
-    private static final String ADDRESS_BOOK_2 = "address-book-2";
+    private List<AddressBookData> contactList = new ArrayList<>();
 
-    private final Map<String, List<AddressBookData>> addressBooks = new HashMap<>();
-
-    public AddressBookService() {
-        addressBooks.put(ADDRESS_BOOK_1, new ArrayList<>());
-        addressBooks.put(ADDRESS_BOOK_2, new ArrayList<>());
-
-        this.addContact(ADDRESS_BOOK_1, new AddressBookData("Abhinav","Thakur" , "at@gmail.com" ,"Delhi", Arrays.asList("9013341138")));
-        this.addContact(ADDRESS_BOOK_1, new AddressBookData("Arpit","Thakur" , "at2@gmail.com" ,"Delhi", Arrays.asList("9013341139")));
-
-        this.addContact(ADDRESS_BOOK_2, new AddressBookData("Prajwal","Rao" , "pr@gmail.com" ,"Karnataka", Arrays.asList("9013341140")));
-        this.addContact(ADDRESS_BOOK_2, new AddressBookData("Manmeet","Jha" , "mj@gmail.com" ,"Delhi", Arrays.asList("9013341141")));
+    public List<AddressBookData> getAddressBookData() {
+        return contactList;
     }
 
-    public AddressBookData addContact(String addressBookId, AddressBookData addressBookData) {
-        addressBookData.setId(UUID.randomUUID().toString());
-        if (!addressBooks.containsKey(addressBookId)) {
-            addressBooks.put(addressBookId, new ArrayList<>());
-        }
-        addressBooks.get(addressBookId).add(addressBookData);
+    public AddressBookData getAddressBookDataById(int contactId) {
+        return contactList.stream()
+                .filter(contactData -> contactData.getContactId()==contactId)
+                .findFirst()
+                .orElseThrow(() -> new AddressBookException("Contact not Found"));
+    }
+
+    public AddressBookData createAddressBookData(AddressBookDTO addressBookDTO) {
+        AddressBookData addressBookData = null;
+        addressBookData = new AddressBookData(contactList.size()+1,addressBookDTO);
         return addressBookData;
     }
 
-    public AddressBookData removeContact(String addressBookId, final String contactId) {
-        if (!addressBooks.containsKey(addressBookId)) {
-            throw new AddressBookException("AddressBook with the given Id does not exist");
-        }
-        Optional<AddressBookData> contactToBeRemoved = addressBooks.get(addressBookId).stream()
-                .filter(addressBookData -> addressBookData.getId().equals(contactId)).findFirst();
-        if (contactToBeRemoved.isPresent()) {
-            addressBooks.get(addressBookId).remove(contactToBeRemoved.get());
-            return contactToBeRemoved.get();
-        } else {
-            throw new AddressBookException("The given contact does not exist!");
-        }
-    }
-
-    public List<AddressBookData> retrieveContacts(String addressBookId) {
-        if (!addressBooks.containsKey(addressBookId)) {
-            throw new AddressBookException("AddressBook with the given Id does not exist");
-        }
-        return addressBooks.get(addressBookId);
-    }
-
-    public List<AddressBookData> retrieveAllUniqueContacts(boolean unique) {
-        // assumed that the contact is unique it's name and numbers matches
-        List<AddressBookData> addressBookData = new ArrayList<>();
-        addressBooks.values().forEach(addressBookData::addAll);
-        if (unique) {
-            return addressBookData.stream().distinct().collect(Collectors.toList());
-        }
+    public AddressBookData updateAddressBookData(int contactId, AddressBookDTO addressBookDTO) {
+        AddressBookData addressBookData = this.getAddressBookDataById(contactId);
+        addressBookData.setName(addressBookDTO.name);
+        addressBookData.setAddress(addressBookDTO.address);
+        addressBookData.setCity(addressBookDTO.city);
+        addressBookData.setState(addressBookDTO.state);
+        addressBookData.setPhone(addressBookDTO.phone);
+        contactList.set(contactId-1,addressBookData);
         return addressBookData;
+    }
+
+    public void deleteAddressBookData(int contactId) {
+        contactList.remove(contactId-1);
     }
 }
