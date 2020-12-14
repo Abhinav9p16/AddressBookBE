@@ -3,8 +3,9 @@ package com.cg.addressbook.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import lombok.ToString;
 
-public class AddressBookDTO {
+public @ToString class AddressBookDTO {
 
     @Pattern(regexp = "^[A-Z][a-zA-z\\s]{2,}$", message = "Contact Name Invalid!")
     public String name;
@@ -28,17 +29,5 @@ public class AddressBookDTO {
         this.state = state;
         this.zip = zip;
         this.phone = phone;
-    }
-
-    @Override
-    public String toString() {
-        return "AddressBookDTO{" +
-                "name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zip='" + zip + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
     }
 }
