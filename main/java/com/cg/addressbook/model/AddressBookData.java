@@ -8,7 +8,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "address_book")
-public @Data class AddressBookData {
+public @Data
+class AddressBookData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,8 +28,11 @@ public @Data class AddressBookData {
     public AddressBookData() {
     }
 
-    public AddressBookData(int contactId , AddressBookDTO addressBookDTO) {
-        this.contactId = contactId;
+    public AddressBookData(AddressBookDTO addressBookDTO) {
+        this.updateAddressBookData(addressBookDTO);
+    }
+
+    public void updateAddressBookData(AddressBookDTO addressBookDTO) {
         this.name = addressBookDTO.name;
         this.address = addressBookDTO.address;
         this.city = addressBookDTO.city;
